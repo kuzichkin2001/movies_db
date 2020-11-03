@@ -31,20 +31,21 @@ namespace movies_db
         private void AddEntity()
         {
 
-            string apiKey = "e5df3688";
-            string baseUrl = $"http://www.omdbapi.com/?apikey={apiKey}";
+            string apiKey = "e5df3688"; // API ключ для взятия информации с сайта
+            string baseUrl = $"http://www.omdbapi.com/?apikey={apiKey}"; // базовая ссылка сайта, с которого берется информация
 
             string name = Title.Text.ToLower();
 
-            var sb = new StringBuilder(baseUrl);
-            sb.Append($"&t={name}");
-            var request = WebRequest.Create(sb.ToString());
-            request.Timeout = 1000;
-            request.Method = "GET";
-            request.ContentType = "application/json";
+            var sb = new StringBuilder(baseUrl); // обращение к конкретному фильму по названию и API ключу
+            sb.Append($"&t={name}"); // добавление имени фильма в ссылку
+            var request = WebRequest.Create(sb.ToString()); // организация веб-запроса по ссылке
+            request.Timeout = 1000; // задержка ответа с сервера в 1 секунду
+            request.Method = "GET"; // тип запроса на сервер, в данном случае GET
+            request.ContentType = "application/json"; // в каком виде прислать ответ с сервера
 
-            string result = string.Empty;
+            string result = string.Empty; // обнуляем результат
 
+            // блок обработки исключений при посылке некорректного запроса
             try
             {
                 using (var response = request.GetResponse())
@@ -69,8 +70,8 @@ namespace movies_db
 
             MessageBox.Show(result);
 
-            dynamic json = JObject.Parse(result);
-            string title = json.Plot;
+            dynamic json = JObject.Parse(result); // парсим строчку result в JSON файл
+            string title = json.Plot; 
 
             var option = MessageBox.Show(title, "Add this title to library", MessageBoxButton.YesNo);
 
